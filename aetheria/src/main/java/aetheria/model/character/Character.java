@@ -127,8 +127,9 @@ public abstract class Character implements Damageable {
      */
     @Override
     public int takeDamage(int damage) {
-        int actualDamage = Validator.clamp(damage, 0, hp);
-        hp = Math.max(0, hp - damage);
+        Validator.requireNonNegative(damage, "damage");
+        int actualDamage = Math.min(damage, hp);
+        hp -= actualDamage;
         return actualDamage;
     }
 
@@ -157,8 +158,9 @@ public abstract class Character implements Damageable {
      * @return jumlah HP yang benar-benar dipulihkan
      */
     public int heal(int amount) {
+        Validator.requireNonNegative(amount, "amount");
         int actual = Math.min(amount, maxHp - hp);
-        hp = Math.min(maxHp, hp + amount);
+        hp += actual;
         return actual;
     }
 

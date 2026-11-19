@@ -160,6 +160,14 @@ public class CharacterAndHeroTest {
         assertEquals(maxHp, fatalDamage);
         assertEquals(0, paladin.getHp());
         assertFalse(paladin.isAlive());
+
+        // Angka negatif melempar IllegalArgumentException dan HP tidak berubah
+        Paladin p2 = new Paladin("Arthur", HeroRace.HUMAN);
+        int hpBefore = p2.getHp();
+        assertThrows(IllegalArgumentException.class, () -> p2.takeDamage(-1));
+        assertEquals(hpBefore, p2.getHp());
+        assertThrows(IllegalArgumentException.class, () -> p2.heal(-1));
+        assertEquals(hpBefore, p2.getHp());
     }
 
     @Test
