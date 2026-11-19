@@ -29,10 +29,7 @@ public class Rogue extends Hero implements PhysicalSkillUser, StatusInflictor {
      * Tier2: 4d6+DEX dmg
      */
     @Override
-    public String useSkill(Character target) {
-        try { markSkillUsed(); }
-        catch (aetheria.model.exception.SkillAlreadyUsedException e) { return e.getMessage(); }
-
+    protected String performSkill(Character target) {
         int[] diceCounts = {2, 3, 4};
         int damage = Dice.roll(diceCounts[levelTier()], 6) + primaryModifier();
         int actual = target.takeDamage(damage);

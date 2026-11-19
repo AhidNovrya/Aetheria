@@ -30,10 +30,7 @@ public class Paladin extends Hero implements SpellCaster, PhysicalSkillUser, Hea
      * Tier2: (4d8+2d8) dmg, 2d8+CHA heal diri
      */
     @Override
-    public String useSkill(Character target) {
-        try { markSkillUsed(); }
-        catch (aetheria.model.exception.SkillAlreadyUsedException e) { return e.getMessage(); }
-
+    protected String performSkill(Character target) {
         int tier = levelTier();
         int damage;
         int selfHeal;

@@ -20,11 +20,7 @@ public class Druid extends Hero implements SpellCaster, Healer, Shapeshifter {
     @Override public String getSkillName() { return SKILL_NAME; }
 
     @Override
-    public String useSkill(Character target) {
-        try { markSkillUsed(); }
-        catch (aetheria.model.exception.SkillAlreadyUsedException e) {
-            return e.getMessage();
-        }
+    protected String performSkill(Character target) {
         String transformLog = transform();
         int[] counts = {1, 2, 2};
         int amount = Dice.roll(counts[levelTier()], 8) + primaryModifier();

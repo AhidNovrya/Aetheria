@@ -186,7 +186,7 @@ public abstract class Character implements Damageable {
     }
 
     /** Skill aktif karakter. Diimplementasikan masing-masing subkelas. */
-    public abstract String useSkill(Character target);
+    public abstract String useSkill(Character target) throws aetheria.model.exception.SkillAlreadyUsedException;
 
     // ─── Efek status ────────────────────────────────────────────────────────
 

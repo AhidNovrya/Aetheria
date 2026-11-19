@@ -112,6 +112,15 @@ public abstract class Hero extends Character {
     /** Nama skill aktif hero. */
     public abstract String getSkillName();
 
+    @Override
+    public final String useSkill(Character target) throws SkillAlreadyUsedException {
+        markSkillUsed();
+        return performSkill(target);
+    }
+
+    /** Logika skill spesifik per subkelas hero. */
+    protected abstract String performSkill(Character target);
+
     /**
      * Hook pertumbuhan level-up per subkelas.
      * Dipanggil di setiap level-up. Subkelas bisa menambah stat khusus

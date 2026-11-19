@@ -26,7 +26,7 @@ abstract class Character {
   + attack(target: Character) : int
   + takeDamage(damage: int) : int
   + heal(amount: int) : int
-  + {abstract} useSkill(target: Character) : String
+  + {abstract} useSkill(target: Character) : String <<throws SkillAlreadyUsedException>>
   + addStatus(type: StatusType, turns: int) : void
   + hasStatus(type: StatusType) : boolean
   + tickStatusEffects() : int
@@ -50,6 +50,8 @@ abstract class Hero {
   + getHeroClass() : HeroClass
   + getRace() : HeroRace
   + {abstract} getSkillName() : String
+  + useSkill(target: Character) : String <<final>>
+  # {abstract} performSkill(target: Character) : String
   + gainExp(amount: int) : int
   + addGold(amount: int) : void
   + spendGold(amount: int) : void

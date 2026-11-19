@@ -17,11 +17,7 @@ public class Fighter extends Hero implements PhysicalSkillUser {
     @Override public String getSkillName() { return SKILL_NAME; }
 
     @Override
-    public String useSkill(Character target) {
-        try { markSkillUsed(); }
-        catch (aetheria.model.exception.SkillAlreadyUsedException e) {
-            return e.getMessage();
-        }
+    protected String performSkill(Character target) {
         return performPhysicalSkill(target);
     }
 

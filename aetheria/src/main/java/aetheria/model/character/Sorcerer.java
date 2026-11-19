@@ -29,10 +29,7 @@ public class Sorcerer extends Hero implements SpellCaster, StatusInflictor {
      * Tier2: 6d8+CHA dmg
      */
     @Override
-    public String useSkill(Character target) {
-        try { markSkillUsed(); }
-        catch (aetheria.model.exception.SkillAlreadyUsedException e) { return e.getMessage(); }
-
+    protected String performSkill(Character target) {
         int[] diceCounts = {2, 4, 6};
         int damage = Dice.roll(diceCounts[levelTier()], 8) + primaryModifier();
         int actual = target.takeDamage(damage);

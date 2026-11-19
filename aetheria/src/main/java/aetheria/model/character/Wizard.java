@@ -29,10 +29,7 @@ public class Wizard extends Hero implements SpellCaster, StatusInflictor {
      * Tier2: 8d6+INT dmg
      */
     @Override
-    public String useSkill(Character target) {
-        try { markSkillUsed(); }
-        catch (aetheria.model.exception.SkillAlreadyUsedException e) { return e.getMessage(); }
-
+    protected String performSkill(Character target) {
         int[] diceCounts = {4, 6, 8};
         int damage = Dice.roll(diceCounts[levelTier()], 6) + primaryModifier();
         int actual = target.takeDamage(damage);

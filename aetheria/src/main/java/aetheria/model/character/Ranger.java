@@ -29,10 +29,7 @@ public class Ranger extends Hero implements SpellCaster, PhysicalSkillUser {
      * Tier2: 4d8+DEX dmg, BURN 3 ronde
      */
     @Override
-    public String useSkill(Character target) {
-        try { markSkillUsed(); }
-        catch (aetheria.model.exception.SkillAlreadyUsedException e) { return e.getMessage(); }
-
+    protected String performSkill(Character target) {
         int tier = levelTier();
         int[] diceCounts = {2, 3, 4};
         int burnDuration = (tier == 2) ? 3 : 2;

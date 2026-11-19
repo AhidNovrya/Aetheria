@@ -13,7 +13,7 @@ interface StatusInflictor <<reference>>
 class Barbarian {
   - skillName : String = "Raging Strike"
   + Barbarian(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + performPhysicalSkill(target: Character) : String
@@ -21,7 +21,7 @@ class Barbarian {
 class Bard {
   - skillName : String = "Inspiring Tune"
   + Bard(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + castSpell(target: Character) : String
@@ -30,7 +30,7 @@ class Bard {
 class Cleric {
   - skillName : String = "Healing Word"
   + Cleric(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + castSpell(target: Character) : String
@@ -39,7 +39,7 @@ class Cleric {
 class Druid {
   - skillName : String = "Wild Shape"
   + Druid(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + castSpell(target: Character) : String
@@ -50,7 +50,7 @@ class Druid {
 class Fighter {
   - skillName : String = "Power Strike"
   + Fighter(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + performPhysicalSkill(target: Character) : String
@@ -58,7 +58,7 @@ class Fighter {
 class Monk {
   - skillName : String = "Flurry of Blows"
   + Monk(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + performPhysicalSkill(target: Character) : String
@@ -66,7 +66,7 @@ class Monk {
 class Paladin {
   - skillName : String = "Divine Smite"
   + Paladin(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + castSpell(target: Character) : String
@@ -76,7 +76,7 @@ class Paladin {
 class Ranger {
   - skillName : String = "Precise Shot"
   + Ranger(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + castSpell(target: Character) : String
@@ -85,7 +85,7 @@ class Ranger {
 class Rogue {
   - skillName : String = "Sneak Attack"
   + Rogue(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + performPhysicalSkill(target: Character) : String
@@ -94,7 +94,7 @@ class Rogue {
 class Sorcerer {
   - skillName : String = "Chaos Bolt"
   + Sorcerer(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + castSpell(target: Character) : String
@@ -103,7 +103,7 @@ class Sorcerer {
 class Warlock {
   - skillName : String = "Eldritch Blast"
   + Warlock(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + castSpell(target: Character) : String
@@ -112,7 +112,7 @@ class Warlock {
 class Wizard {
   - skillName : String = "Fireball"
   + Wizard(name: String, race: HeroRace)
-  + useSkill(target: Character) : String
+  # performSkill(target: Character) : String
   # applyLevelUpGrowth() : void
   + getSkillName() : String
   + castSpell(target: Character) : String

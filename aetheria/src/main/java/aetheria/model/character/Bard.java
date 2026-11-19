@@ -18,11 +18,7 @@ public class Bard extends Hero implements SpellCaster, Healer {
     @Override public String getSkillName() { return SKILL_NAME; }
 
     @Override
-    public String useSkill(Character target) {
-        try { markSkillUsed(); }
-        catch (aetheria.model.exception.SkillAlreadyUsedException e) {
-            return e.getMessage();
-        }
+    protected String performSkill(Character target) {
         return healTarget(target);
     }
 

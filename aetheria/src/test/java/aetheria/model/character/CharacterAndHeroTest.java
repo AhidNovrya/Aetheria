@@ -177,13 +177,14 @@ public class CharacterAndHeroTest {
         Paladin dummy = new Paladin("Dummy", HeroRace.DWARF);
 
         assertFalse(fighter.isSkillUsed());
-        String log1 = fighter.useSkill(dummy);
-        assertNotNull(log1);
+        assertDoesNotThrow(() -> {
+            String log1 = fighter.useSkill(dummy);
+            assertNotNull(log1);
+        });
         assertTrue(fighter.isSkillUsed());
 
-        // Percobaan pemakaian kedua
-        String log2 = fighter.useSkill(dummy);
-        assertTrue(log2.contains("sudah dipakai") || log2.contains("Skill"));
+        // Percobaan pemakaian kedua melempar SkillAlreadyUsedException
+        assertThrows(SkillAlreadyUsedException.class, () -> fighter.useSkill(dummy));
 
         // markSkillUsed langsung melempar SkillAlreadyUsedException
         assertThrows(SkillAlreadyUsedException.class, fighter::markSkillUsed);
@@ -191,8 +192,10 @@ public class CharacterAndHeroTest {
         // Reset
         fighter.resetSkill();
         assertFalse(fighter.isSkillUsed());
-        String log3 = fighter.useSkill(dummy);
-        assertNotNull(log3);
+        assertDoesNotThrow(() -> {
+            String log3 = fighter.useSkill(dummy);
+            assertNotNull(log3);
+        });
         assertTrue(fighter.isSkillUsed());
     }
 
@@ -216,7 +219,7 @@ public class CharacterAndHeroTest {
 
     @Test
     @DisplayName("Status kedaluwarsa terhapus dan clearBattleEffects mengembalikan form ke NORMAL")
-    void testStatusExpiryAndClearBattleEffects() {
+    void testStatusExpiryAndClearBattleEffects() throws Exception {
         Druid druid = new Druid("Malfurion", HeroRace.ELF);
         Paladin target = new Paladin("Target", HeroRace.HUMAN);
 
@@ -265,9 +268,11 @@ public class CharacterAndHeroTest {
         Paladin dummyTarget = new Paladin("Dummy", HeroRace.DWARF);
 
         for (Hero h : heroes) {
-            String log = h.useSkill(dummyTarget);
-            assertNotNull(log);
-            assertFalse(log.isBlank(), "useSkill() dari " + h.getHeroClass() + " tidak boleh blank");
+            assertDoesNotThrow(() -> {
+                String log = h.useSkill(dummyTarget);
+                assertNotNull(log);
+                assertFalse(log.isBlank(), "useSkill() dari " + h.getHeroClass() + " tidak boleh blank");
+            });
         }
     }
 }

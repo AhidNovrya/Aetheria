@@ -26,10 +26,7 @@ public class Warlock extends Hero implements SpellCaster, LifeStealer {
      * Mendelegasikan ke drainLife dengan logika tier penuh.
      */
     @Override
-    public String useSkill(Character target) {
-        try { markSkillUsed(); }
-        catch (aetheria.model.exception.SkillAlreadyUsedException e) { return e.getMessage(); }
-
+    protected String performSkill(Character target) {
         return drainLife(target);
     }
 
