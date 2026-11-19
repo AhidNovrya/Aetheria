@@ -1,0 +1,42 @@
+@startuml 00_Ringkasan_Package
+!include skin.iuml
+title Aetheria - 00 Ringkasan Package (peta untuk menghubungkan diagram)
+
+left to right direction
+skinparam packageStyle rectangle
+
+package "controller\n(diagram 09)" as controller #F6EEFA
+package "view\n(diagram 09)" as view #FFF8E5
+package "service\n(diagram 08)" as service #F1FAF1
+package "model.character\n(diagram 02, 03, 04)" as character #EEF5FB
+package "model.item\n(diagram 05)" as item #EEF5FB
+package "model.quest\n(diagram 06)" as quest #EEF5FB
+package "model.enums + model.ability\n(diagram 01)" as enums #FDF6E9
+package "model.exception + util\n(diagram 07)" as ex #FDF0EE
+
+controller --> view : tampil / baca input
+controller --> service
+controller --> character
+controller --> item
+controller --> quest
+service --> character
+service --> item
+view ..> character
+view ..> item
+view ..> quest
+character --> item : Hero memiliki Inventory
+character --> enums
+quest --> enums
+quest ..> character : claimReward(hero)
+item ..> character : use(hero)
+character ..> ex
+item ..> ex
+quest ..> ex
+view ..> ex : InvalidInputException
+service ..> ex
+
+note bottom
+  Cara membaca: setiap panah antar package di sini
+  muncul sebagai tipe abu-abu <<reference>> pada diagram detailnya.
+end note
+@enduml

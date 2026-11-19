@@ -1,0 +1,162 @@
+@startuml 03_Dua_Belas_Hero
+!include skin.iuml
+title Aetheria - 03 Dua Belas Class Hero
+
+abstract class Hero <<reference>>
+interface SpellCaster <<reference>>
+interface PhysicalSkillUser <<reference>>
+interface Healer <<reference>>
+interface Shapeshifter <<reference>>
+interface LifeStealer <<reference>>
+interface StatusInflictor <<reference>>
+
+class Barbarian {
+  - skillName : String = "Raging Strike"
+  + Barbarian(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + performPhysicalSkill(target: Character) : String
+}
+class Bard {
+  - skillName : String = "Inspiring Tune"
+  + Bard(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + castSpell(target: Character) : String
+  + healTarget(target: Character) : String
+}
+class Cleric {
+  - skillName : String = "Healing Word"
+  + Cleric(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + castSpell(target: Character) : String
+  + healTarget(target: Character) : String
+}
+class Druid {
+  - skillName : String = "Wild Shape"
+  + Druid(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + castSpell(target: Character) : String
+  + healTarget(target: Character) : String
+  + transform() : String
+  + revertForm() : String
+}
+class Fighter {
+  - skillName : String = "Power Strike"
+  + Fighter(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + performPhysicalSkill(target: Character) : String
+}
+class Monk {
+  - skillName : String = "Flurry of Blows"
+  + Monk(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + performPhysicalSkill(target: Character) : String
+}
+class Paladin {
+  - skillName : String = "Divine Smite"
+  + Paladin(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + castSpell(target: Character) : String
+  + performPhysicalSkill(target: Character) : String
+  + healTarget(target: Character) : String
+}
+class Ranger {
+  - skillName : String = "Precise Shot"
+  + Ranger(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + castSpell(target: Character) : String
+  + performPhysicalSkill(target: Character) : String
+}
+class Rogue {
+  - skillName : String = "Sneak Attack"
+  + Rogue(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + performPhysicalSkill(target: Character) : String
+  + applyStatus(target: Character) : String
+}
+class Sorcerer {
+  - skillName : String = "Chaos Bolt"
+  + Sorcerer(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + castSpell(target: Character) : String
+  + applyStatus(target: Character) : String
+}
+class Warlock {
+  - skillName : String = "Eldritch Blast"
+  + Warlock(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + castSpell(target: Character) : String
+  + drainLife(target: Character) : String
+}
+class Wizard {
+  - skillName : String = "Fireball"
+  + Wizard(name: String, race: HeroRace)
+  + useSkill(target: Character) : String
+  # applyLevelUpGrowth() : void
+  + getSkillName() : String
+  + castSpell(target: Character) : String
+  + applyStatus(target: Character) : String
+}
+
+Hero <|-- Barbarian
+Hero <|-- Bard
+Hero <|-- Cleric
+Hero <|-- Druid
+Hero <|-- Fighter
+Hero <|-- Monk
+Hero <|-- Paladin
+Hero <|-- Ranger
+Hero <|-- Rogue
+Hero <|-- Sorcerer
+Hero <|-- Warlock
+Hero <|-- Wizard
+
+SpellCaster <|.. Bard
+SpellCaster <|.. Cleric
+SpellCaster <|.. Druid
+SpellCaster <|.. Paladin
+SpellCaster <|.. Ranger
+SpellCaster <|.. Sorcerer
+SpellCaster <|.. Warlock
+SpellCaster <|.. Wizard
+
+PhysicalSkillUser <|.. Barbarian
+PhysicalSkillUser <|.. Fighter
+PhysicalSkillUser <|.. Monk
+PhysicalSkillUser <|.. Paladin
+PhysicalSkillUser <|.. Ranger
+PhysicalSkillUser <|.. Rogue
+
+Healer <|.. Bard
+Healer <|.. Cleric
+Healer <|.. Druid
+Healer <|.. Paladin
+
+Shapeshifter <|.. Druid
+LifeStealer <|.. Warlock
+
+StatusInflictor <|.. Rogue
+StatusInflictor <|.. Sorcerer
+StatusInflictor <|.. Wizard
+@enduml

@@ -1,0 +1,114 @@
+@startuml 02_Character_dan_Hero
+!include skin.iuml
+title Aetheria - 02 Character dan Hero (kelas dasar, aturan D&D 5e)
+
+abstract class Character {
+  - name : String
+  - hp : int
+  - maxHp : int
+  - armorClass : int
+  - abilityScores : EnumMap<Ability, Integer>
+  - statuses : EnumMap<StatusType, Integer>
+  - form : FormType = NORMAL
+  - formAttackBonus : int
+  - formArmorBonus : int
+  # Character(name: String, scores: Map<Ability, Integer>, maxHp: int, armorClass: int)
+  + getName() : String
+  + getHp() : int
+  + getMaxHp() : int
+  + getArmorClass() : int
+  + getAbilityScore(ability: Ability) : int
+  + getModifier(ability: Ability) : int
+  + getProficiencyBonus() : int
+  + isAlive() : boolean
+  + {abstract} getAttackBonus() : int
+  + {abstract} rollDamage(critical: boolean) : int
+  + attack(target: Character) : int
+  + takeDamage(damage: int) : int
+  + heal(amount: int) : int
+  + {abstract} useSkill(target: Character) : String
+  + addStatus(type: StatusType, turns: int) : void
+  + hasStatus(type: StatusType) : boolean
+  + tickStatusEffects() : int
+  + clearBattleEffects() : void
+  + getForm() : FormType
+  # setForm(form: FormType, atkBonus: int, acBonus: int) : void
+  # healBy(target: Character, base: int) : int
+}
+
+abstract class Hero {
+  - level : int
+  - exp : int
+  - gold : int
+  - skillUsed : boolean
+  - inventory : Inventory
+  - heroClass : HeroClass
+  - race : HeroRace
+  # Hero(name: String, heroClass: HeroClass, race: HeroRace)
+  - buildAbilityScores(heroClass: HeroClass, race: HeroRace) : Map<Ability, Integer>
+  - {static} initialMaxHp(heroClass: HeroClass, conMod: int) : int
+  + getHeroClass() : HeroClass
+  + getRace() : HeroRace
+  + {abstract} getSkillName() : String
+  + gainExp(amount: int) : int
+  + addGold(amount: int) : void
+  + spendGold(amount: int) : void
+  + getProficiencyBonus() : int
+  + getAttackBonus() : int
+  + rollDamage(critical: boolean) : int
+  - levelUp() : void
+  # {abstract} applyLevelUpGrowth() : void
+  + isSkillUsed() : boolean
+  + markSkillUsed() : void
+  + resetSkill() : void
+  + getLevel() : int
+  + getExp() : int
+  + getExpToNextLevel() : int
+  + getGold() : int
+  + getInventory() : Inventory
+}
+
+interface Damageable <<reference>>
+enum Ability <<reference>>
+enum StatusType <<reference>>
+enum FormType <<reference>>
+enum HeroClass <<reference>>
+enum HeroRace <<reference>>
+class Inventory <<reference>>
+class Monster <<reference>>
+class "12 subclass hero\n(diagram 03)" as HeroSub <<reference>>
+exception InsufficientGoldException <<reference>>
+exception SkillAlreadyUsedException <<reference>>
+class Validator <<reference>>
+class GameConstants <<reference>>
+class DndRules <<reference>>
+class Dice <<reference>>
+
+Damageable <|.. Character
+Character <|-- Hero
+Character <|-- Monster
+Hero <|-- HeroSub
+Character "1" --> "6" Ability : abilityScores
+Character "1" --> "0..3" StatusType : statuses
+Character "1" --> "1" FormType : form
+Hero "1" --> "1" HeroClass : heroClass
+Hero "1" --> "1" HeroRace : race
+Hero "1" *-- "1" Inventory : inventory
+Hero ..> InsufficientGoldException : <<throws>>
+Hero ..> SkillAlreadyUsedException : <<throws>>
+Hero ..> GameConstants : <<uses>>
+Hero ..> DndRules : <<uses>>
+Character ..> DndRules : <<uses>>
+Character ..> Dice : <<uses>>
+Character ..> Validator : <<uses>>
+Hero ..> Validator : <<uses>>
+
+note bottom of Hero
+  Aturan D&D 5e:
+  - HP level 1 = hit die class (maks) + modifier CON
+  - Tiap level naik: rata-rata hit die + modifier CON (minimal 1)
+  - Proficiency bonus dari level, XP naik level dari tabel XP D&D
+  - AC = 10 + modifier DEX (+ bonus form)
+  - Serangan = d20 + proficiency + modifier kemampuan utama vs AC lawan
+end note
+@enduml

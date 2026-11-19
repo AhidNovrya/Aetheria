@@ -1,0 +1,106 @@
+@startuml 01_Enum_dan_Interface
+!include skin.iuml
+title Aetheria - 01 Enum dan Tujuh Interface Kemampuan
+
+enum HeroClass {
+  BARBARIAN
+  BARD
+  CLERIC
+  DRUID
+  FIGHTER
+  MONK
+  PALADIN
+  RANGER
+  ROGUE
+  SORCERER
+  WARLOCK
+  WIZARD
+  - hitDie : int
+  - primaryAbility : Ability
+  - HeroClass(hitDie: int, primary: Ability)
+  + getDisplayName() : String
+  + getHitDie() : int
+  + getPrimaryAbility() : Ability
+}
+enum HeroRace {
+  HUMAN
+  ELF
+  DWARF
+  - abilityBonuses : EnumMap<Ability, Integer>
+  - HeroRace(bonuses: Map<Ability, Integer>)
+  + getDisplayName() : String
+  + getAbilityBonus(ability: Ability) : int
+}
+enum Ability {
+  STRENGTH
+  DEXTERITY
+  CONSTITUTION
+  INTELLIGENCE
+  WISDOM
+  CHARISMA
+  + getAbbreviation() : String
+}
+HeroClass ..> Ability
+HeroRace ..> Ability
+enum MonsterType {
+  SLIME
+  GOBLIN
+  MIMIC
+  SKELETON
+  WOLF
+  + getDisplayName() : String
+}
+enum StatusType {
+  BURN
+  POISON
+  ROOT
+}
+enum FormType {
+  NORMAL
+  BEAST
+  OBJECT
+}
+
+interface Damageable {
+  + takeDamage(damage: int) : int
+  + isAlive() : boolean
+}
+interface SpellCaster {
+  + castSpell(target: Character) : String
+}
+interface PhysicalSkillUser {
+  + performPhysicalSkill(target: Character) : String
+}
+interface Healer {
+  + healTarget(target: Character) : String
+}
+interface Shapeshifter {
+  + transform() : String
+  + revertForm() : String
+}
+interface LifeStealer {
+  + drainLife(target: Character) : String
+}
+interface StatusInflictor {
+  + applyStatus(target: Character) : String
+}
+
+abstract class Character <<reference>>
+
+SpellCaster ..> Character
+PhysicalSkillUser ..> Character
+Healer ..> Character
+LifeStealer ..> Character
+StatusInflictor ..> Character
+
+note bottom of Damageable
+  Daftar implementer:
+  Damageable : Character (diwarisi semua hero dan monster)
+  SpellCaster : Bard, Cleric, Druid, Paladin, Ranger, Sorcerer, Warlock, Wizard, Slime
+  PhysicalSkillUser : Barbarian, Fighter, Monk, Paladin, Ranger, Rogue, Goblin, Skeleton, Wolf, Mimic
+  Healer : Bard, Cleric, Druid, Paladin, Slime
+  Shapeshifter : Druid, Mimic
+  LifeStealer : Warlock, Mimic
+  StatusInflictor : Rogue, Sorcerer, Wizard, Mimic, Wolf
+end note
+@enduml

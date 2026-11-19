@@ -1,0 +1,55 @@
+@startuml 08_Service_Battle_Encounter
+!include skin.iuml
+title Aetheria - 08 Service: Battle dan Encounter (tanpa Scanner / println)
+
+class BattleManager {
+  - hero : Hero
+  - monster : Monster
+  - turnCount : int
+  + start(hero: Hero, monster: Monster) : void
+  + playerAttack() : String
+  + playerSkill() : String
+  + playerUsePotion(potion: Potion) : String
+  + monsterTurn() : String
+  + processTurnStart(actor: Character) : boolean
+  + processTurnEnd(actor: Character) : String
+  + isOver() : boolean
+  + isHeroWinner() : boolean
+  + finish() : void
+}
+class EncounterManager {
+  - random : Random
+  - factories : Map<MonsterType, Function<Integer, Monster>>
+  + EncounterManager()
+  + generateMonster(type: MonsterType, heroLevel: int) : Monster
+  + generateRandomMonster(heroLevel: int) : Monster
+  + rollDrop(monster: Monster) : Item
+}
+
+abstract class Hero <<reference>>
+abstract class Monster <<reference>>
+abstract class Character <<reference>>
+abstract class Item <<reference>>
+class Potion <<reference>>
+enum MonsterType <<reference>>
+exception SkillAlreadyUsedException <<reference>>
+exception ItemNotUsableException <<reference>>
+class GameConstants <<reference>>
+
+BattleManager "1" --> "0..1" Hero : hero
+BattleManager "1" --> "0..1" Monster : monster
+BattleManager ..> Character : processTurn*(actor)
+BattleManager ..> Potion
+BattleManager ..> SkillAlreadyUsedException : <<throws>>
+BattleManager ..> ItemNotUsableException : <<throws>>
+EncounterManager ..> Monster : <<create>>
+EncounterManager ..> MonsterType
+EncounterManager ..> Item : <<create>>
+EncounterManager ..> GameConstants : <<uses>>
+
+note bottom of BattleManager
+  Semua method mengembalikan String log.
+  BattleController yang memanggil view.showMessage(log).
+  BattleManager.start() memanggil hero.resetSkill().
+end note
+@enduml

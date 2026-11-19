@@ -1,0 +1,45 @@
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontName "DejaVu Sans"
+skinparam defaultFontSize 12
+skinparam nodesep 30
+skinparam ranksep 50
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #3B5B7A
+  ArrowColor #3B5B7A
+}
+skinparam interface {
+  BackgroundColor #FBE9CF
+  BorderColor #B07A2A
+}
+skinparam enum {
+  BackgroundColor #E8ECF4
+  BorderColor #5B6B8A
+}
+skinparam exception {
+  BackgroundColor #FADBD8
+  BorderColor #A93226
+}
+' Tipe yang hanya dirujuk (dijelaskan lengkap di diagram lain)
+skinparam class<<reference>> {
+  BackgroundColor #EDEDED
+  BorderColor #9A9A9A
+  FontColor #666666
+}
+skinparam interface<<reference>> {
+  BackgroundColor #EDEDED
+  BorderColor #9A9A9A
+  FontColor #666666
+}
+skinparam enum<<reference>> {
+  BackgroundColor #EDEDED
+  BorderColor #9A9A9A
+  FontColor #666666
+}
+skinparam exception<<reference>> {
+  BackgroundColor #EDEDED
+  BorderColor #9A9A9A
+  FontColor #666666
+}
+hide <<reference>> members

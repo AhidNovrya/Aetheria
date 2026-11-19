@@ -1,0 +1,51 @@
+@startuml 06_Quest
+!include skin.iuml
+title Aetheria - 06 Quest dan Reward
+
+class Quest {
+  - title : String
+  - targetType : MonsterType
+  - requiredKills : int
+  - currentKills : int
+  - rewardExp : int
+  - rewardGold : int
+  - claimed : boolean
+  + Quest(title: String, target: MonsterType, kills: int, exp: int, gold: int)
+  + recordKill(type: MonsterType) : void
+  + getProgress() : String
+  + isCompleted() : boolean
+  + isClaimed() : boolean
+  + claimReward(hero: Hero) : void
+  + getTitle() : String
+  + getTargetType() : MonsterType
+}
+class QuestManager {
+  - quests : List<Quest>
+  - activeQuest : Quest
+  + getQuests() : List<Quest>
+  + getActiveQuest() : Quest
+  + acceptQuest(index: int) : void
+  + recordKill(type: MonsterType) : void
+  + claimReward(hero: Hero) : void
+}
+
+enum MonsterType <<reference>>
+abstract class Hero <<reference>>
+exception InvalidQuestException <<reference>>
+exception QuestNotCompletedException <<reference>>
+exception QuestAlreadyClaimedException <<reference>>
+
+QuestManager "1" *-- "0..*" Quest : quests
+QuestManager "1" --> "0..1" Quest : activeQuest
+Quest "1" --> "1" MonsterType : targetType
+Quest ..> Hero : claimReward(hero)
+QuestManager ..> Hero
+QuestManager ..> InvalidQuestException : <<throws>>
+Quest ..> QuestNotCompletedException : <<throws>>
+Quest ..> QuestAlreadyClaimedException : <<throws>>
+
+note bottom of QuestManager
+  Alur klaim: QuestController -> QuestManager.claimReward(hero)
+  -> activeQuest.claimReward(hero). Hanya QuestManager yang dipanggil dari luar.
+end note
+@enduml

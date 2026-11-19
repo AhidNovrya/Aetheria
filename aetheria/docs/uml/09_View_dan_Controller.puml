@@ -1,0 +1,93 @@
+@startuml 09_View_dan_Controller
+!include skin.iuml
+title Aetheria - 09 View dan Controller (MVC)
+
+class Main <<entry point>> {
+  + {static} main(args: String[]) : void
+}
+class ConsoleView {
+  - scanner : Scanner
+  + ConsoleView(scanner: Scanner)
+  + readInt(min: int, max: int) : int
+  + readLine(prompt: String) : String
+  + showMainMenu() : void
+  + showHeroStatus(hero: Hero) : void
+  + showClassMenu() : void
+  + showRaceMenu() : void
+  + showBattleStatus(hero: Hero, monster: Monster) : void
+  + showBattleMenu(hero: Hero) : void
+  + showInventory(inv: Inventory) : void
+  + showQuestBoard(qm: QuestManager) : void
+  + showMessage(msg: String) : void
+  + showError(msg: String) : void
+  + close() : void
+}
+class GameController {
+  - hero : Hero
+  - running : boolean
+  + GameController(view: ConsoleView)
+  + start() : void
+  - chooseHero() : void
+  - chooseHeroClass() : HeroClass
+  - chooseRace() : HeroRace
+  - createHero(type: HeroClass, name: String, race: HeroRace) : Hero
+  - handleMenu() : void
+  - explore() : void
+  - handleVictory(monster: Monster) : void
+}
+class BattleController {
+  + BattleController(view: ConsoleView, battle: BattleManager)
+  + runBattle(hero: Hero, monster: Monster) : boolean
+  - playerTurn() : void
+  - monsterTurn() : void
+}
+class InventoryController {
+  + InventoryController(view: ConsoleView)
+  + open(hero: Hero) : void
+  - useOrEquip(hero: Hero, item: Item) : void
+}
+class QuestController {
+  + QuestController(view: ConsoleView, qm: QuestManager)
+  + open(hero: Hero) : void
+}
+
+abstract class Hero <<reference>>
+abstract class Monster <<reference>>
+abstract class Item <<reference>>
+class Inventory <<reference>>
+class QuestManager <<reference>>
+class BattleManager <<reference>>
+class EncounterManager <<reference>>
+enum HeroClass <<reference>>
+enum HeroRace <<reference>>
+exception InvalidInputException <<reference>>
+exception GameException <<reference>>
+
+Main ..> GameController : <<create>>
+Main ..> ConsoleView : <<create>>
+GameController "1" *-- "1" ConsoleView : view
+GameController "1" *-- "1" BattleController
+GameController "1" *-- "1" InventoryController
+GameController "1" *-- "1" QuestController
+GameController "1" *-- "1" EncounterManager
+GameController "1" *-- "1" QuestManager
+GameController "1" --> "0..1" Hero : hero
+BattleController "1" *-- "1" BattleManager
+BattleController --> ConsoleView
+InventoryController --> ConsoleView
+QuestController --> ConsoleView
+QuestController --> QuestManager
+
+ConsoleView ..> Hero
+ConsoleView ..> Monster
+ConsoleView ..> Inventory
+ConsoleView ..> QuestManager
+ConsoleView ..> InvalidInputException : <<throws>>
+InventoryController ..> Inventory
+InventoryController ..> Item
+GameController ..> HeroClass
+GameController ..> HeroRace
+GameController ..> Monster
+note "Controller menangkap GameException\nlalu memanggil view.showError(e.getMessage())" as Controller_note
+Controller_note .. GameException
+@enduml

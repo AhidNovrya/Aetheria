@@ -1,0 +1,85 @@
+@startuml 04_Monster
+!include skin.iuml
+title Aetheria - 04 Monster
+
+abstract class Character <<reference>>
+enum MonsterType <<reference>>
+interface SpellCaster <<reference>>
+interface PhysicalSkillUser <<reference>>
+interface Healer <<reference>>
+interface Shapeshifter <<reference>>
+interface LifeStealer <<reference>>
+interface StatusInflictor <<reference>>
+
+abstract class Monster {
+  - expReward : int
+  - goldReward : int
+  - type : MonsterType
+  - attackBonus : int
+  - damageDiceCount : int
+  - damageDieSides : int
+  - damageBonus : int
+  # Monster(name: String, scores: Map<Ability, Integer>, hp: int, ac: int, attackBonus: int,\n      dmgCount: int, dmgSides: int, dmgBonus: int, exp: int, gold: int, type: MonsterType)
+  + getAttackBonus() : int
+  + rollDamage(critical: boolean) : int
+  + getExpReward() : int
+  + getGoldReward() : int
+  + getType() : MonsterType
+  # {static} scale(base: int, heroLevel: int) : int
+}
+class Slime {
+  - skillName : String = "Arcane Regenerate"
+  + Slime(heroLevel: int)
+  + useSkill(target: Character) : String
+  + castSpell(target: Character) : String
+  + healTarget(target: Character) : String
+}
+class Goblin {
+  - skillName : String = "Stab"
+  + Goblin(heroLevel: int)
+  + useSkill(target: Character) : String
+  + performPhysicalSkill(target: Character) : String
+}
+class Mimic {
+  - skillName : String = "Mimic Bite"
+  + Mimic(heroLevel: int)
+  + useSkill(target: Character) : String
+  + performPhysicalSkill(target: Character) : String
+  + transform() : String
+  + revertForm() : String
+  + drainLife(target: Character) : String
+  + applyStatus(target: Character) : String
+}
+class Skeleton {
+  - skillName : String = "Bone Strike"
+  + Skeleton(heroLevel: int)
+  + useSkill(target: Character) : String
+  + performPhysicalSkill(target: Character) : String
+}
+class Wolf {
+  - skillName : String = "Rending Bite"
+  + Wolf(heroLevel: int)
+  + useSkill(target: Character) : String
+  + performPhysicalSkill(target: Character) : String
+  + applyStatus(target: Character) : String
+}
+
+Character <|-- Monster
+Monster <|-- Slime
+Monster <|-- Goblin
+Monster <|-- Mimic
+Monster <|-- Skeleton
+Monster <|-- Wolf
+Monster "1" --> "1" MonsterType : type
+
+SpellCaster <|.. Slime
+Healer <|.. Slime
+PhysicalSkillUser <|.. Goblin
+PhysicalSkillUser <|.. Skeleton
+PhysicalSkillUser <|.. Wolf
+PhysicalSkillUser <|.. Mimic
+Shapeshifter <|.. Mimic
+LifeStealer <|.. Mimic
+StatusInflictor <|.. Mimic
+StatusInflictor <|.. Wolf
+@enduml

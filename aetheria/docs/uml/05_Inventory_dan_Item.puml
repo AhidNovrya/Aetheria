@@ -1,0 +1,72 @@
+@startuml 05_Inventory_dan_Item
+!include skin.iuml
+title Aetheria - 05 Inventory dan Item
+
+abstract class Item {
+  - name : String
+  # Item(name: String)
+  + getName() : String
+  + {abstract} getDescription() : String
+  + {abstract} use(hero: Hero) : void
+  + {abstract} isConsumable() : boolean
+}
+class Weapon {
+  - damageDiceCount : int
+  - damageDieSides : int
+  - bonusAttack : int
+  + Weapon(name: String, diceCount: int, dieSides: int, bonusAttack: int)
+  + getDamageDiceCount() : int
+  + getDamageDieSides() : int
+  + getBonusAttack() : int
+  + getDescription() : String
+  + use(hero: Hero) : void
+  + isConsumable() : boolean
+}
+class Potion {
+  - healAmount : int
+  + Potion(name: String, healAmount: int)
+  + getHealAmount() : int
+  + getDescription() : String
+  + use(hero: Hero) : void
+  + isConsumable() : boolean
+}
+class Inventory {
+  - items : List<Item>
+  - equippedWeapon : Weapon
+  + addItem(item: Item) : void
+  + removeItem(item: Item) : boolean
+  + getItems() : List<Item>
+  + getConsumables() : List<Item>
+  + getSortedItems(cmp: Comparator<Item>) : List<Item>
+  + useItem(item: Item, hero: Hero) : void
+  + equipWeapon(weapon: Weapon) : void
+  + getEquippedWeapon() : Weapon
+  + getWeaponBonus() : int
+  + getEquippedDamageDice() : int[]
+  + isFull() : boolean
+  + size() : int
+}
+
+abstract class Hero <<reference>>
+exception InventoryFullException <<reference>>
+exception ItemNotUsableException <<reference>>
+class GameConstants <<reference>>
+
+Item <|-- Weapon
+Item <|-- Potion
+Hero "1" *-- "1" Inventory : inventory
+Inventory "1" o-- "0..10" Item : items
+Inventory "1" --> "0..1" Weapon : equippedWeapon
+Item ..> Hero : use(hero)
+Inventory ..> Hero : useItem(.., hero)
+Inventory ..> InventoryFullException : <<throws>>
+Inventory ..> ItemNotUsableException : <<throws>>
+Inventory ..> GameConstants : <<uses>>
+
+note right of Inventory
+  Aturan pemanggilan (hindari siklus):
+  Controller -> Inventory.useItem() -> Item.use(hero)
+  Weapon.use() hanya memanggil inventory.equipWeapon(this);
+  Inventory tidak memanggil balik Item.use().
+end note
+@enduml

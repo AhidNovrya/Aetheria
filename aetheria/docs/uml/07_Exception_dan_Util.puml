@@ -1,0 +1,79 @@
+@startuml 07_Exception_dan_Util
+!include skin.iuml
+title Aetheria - 07 Exception dan Util (static)
+
+exception GameException <<checked>> {
+  + GameException(message: String)
+}
+exception InventoryFullException {
+  + InventoryFullException(itemName: String)
+}
+exception InsufficientGoldException {
+  - required : int
+  - owned : int
+  + getRequired() : int
+  + getOwned() : int
+}
+exception InvalidQuestException
+exception QuestNotCompletedException
+exception QuestAlreadyClaimedException
+exception SkillAlreadyUsedException
+exception InvalidInputException {
+  - min : int
+  - max : int
+}
+exception ItemNotUsableException
+
+GameException <|-- InventoryFullException
+GameException <|-- InsufficientGoldException
+GameException <|-- InvalidQuestException
+GameException <|-- QuestNotCompletedException
+GameException <|-- QuestAlreadyClaimedException
+GameException <|-- SkillAlreadyUsedException
+GameException <|-- InvalidInputException
+GameException <|-- ItemNotUsableException
+
+class GameConstants <<final>> {
+  + {static} MAX_INVENTORY : int = 10
+  + {static} MAX_LEVEL : int = 20
+  + {static} MAX_ACTIVE_QUEST : int = 1
+  + {static} DROP_CHANCE : double = 0.3
+  + {static} STANDARD_ARRAY : int[] = {15, 14, 13, 12, 10, 8}
+  - GameConstants()
+}
+class DndRules <<final>> {
+  + {static} XP_THRESHOLDS : int[]
+  - DndRules()
+  + {static} modifier(score: int) : int
+  + {static} proficiencyBonus(level: int) : int
+  + {static} levelForExp(exp: int) : int
+  + {static} expForLevel(level: int) : int
+  + {static} averageHitDie(sides: int) : int
+}
+class Dice <<final>> {
+  - {static} random : Random
+  - Dice()
+  + {static} roll(count: int, sides: int) : int
+  + {static} d20() : int
+  + {static} setSeed(seed: long) : void
+}
+class Validator <<final>> {
+  - Validator()
+  + {static} requireNonBlank(value: String, field: String) : String
+  + {static} requireNonNegative(value: int, field: String) : int
+  + {static} requireNonNull(value: T, field: String) : T
+  + {static} clamp(value: int, min: int, max: int) : int
+}
+
+note bottom of GameException
+  Dilempar oleh:
+  InventoryFullException : Inventory.addItem()
+  InsufficientGoldException : Hero.spendGold()
+  InvalidQuestException : QuestManager.acceptQuest()
+  QuestNotCompleted / AlreadyClaimed : Quest.claimReward()
+  SkillAlreadyUsedException : Hero.markSkillUsed() / BattleManager.playerSkill()
+  InvalidInputException : ConsoleView.readInt()
+  ItemNotUsableException : Inventory.useItem() / BattleManager.playerUsePotion()
+  Ditangkap di Controller, lalu ditampilkan lewat ConsoleView.showError().
+end note
+@enduml
