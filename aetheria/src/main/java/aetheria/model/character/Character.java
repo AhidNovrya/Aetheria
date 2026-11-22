@@ -8,6 +8,7 @@ import aetheria.util.DndRules;
 import aetheria.util.Dice;
 import aetheria.util.Validator;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,10 +29,6 @@ public abstract class Character implements Damageable {
     private final String name;
     private int hp;
     private int maxHp;
-    // Disimpan agar getAttackPower() tetap ada sesuai puml; untuk hero diisi 0
-    private int attackPower;
-    // Base defense; untuk hero = base AC (10), untuk monster = AC langsung
-    private int defense;
 
     /** Skor kemampuan D&D (STR, DEX, CON, INT, WIS, CHA). */
     private final EnumMap<Ability, Integer> abilityScores;
@@ -59,11 +56,10 @@ public abstract class Character implements Damageable {
                         EnumMap<Ability, Integer> abilityScores,
                         int maxHp) {
         this.name          = Validator.requireNonBlank(name, "name");
-        this.abilityScores = Validator.requireNonNull(abilityScores, "abilityScores");
+        Validator.requireNonNull(abilityScores, "abilityScores");
+        this.abilityScores = new EnumMap<>(abilityScores);
         this.maxHp         = Validator.requireNonNegative(maxHp, "maxHp");
         this.hp            = maxHp;
-        this.attackPower   = 0;
-        this.defense       = 10;
         this.statuses      = new EnumMap<>(StatusType.class);
         this.form          = FormType.NORMAL;
         this.formAttackBonus  = 0;
@@ -75,13 +71,24 @@ public abstract class Character implements Damageable {
     public String getName()       { return name; }
     public int    getHp()         { return hp; }
     public int    getMaxHp()      { return maxHp; }
-    public int    getAttackPower(){ return attackPower; }
-    public int    getDefense()    { return defense; }
     public FormType getForm()     { return form; }
 
     /** Mengembalikan skor kemampuan tertentu (default 10 bila tidak ada). */
-    protected int getAbilityScore(Ability ability) {
+    public int getAbilityScore(Ability ability) {
         return abilityScores.getOrDefault(ability, 10);
+    }
+
+    /** Mengembalikan modifier kemampuan D&D. */
+    public int getModifier(Ability ability) {
+        return DndRules.modifier(getAbilityScore(ability));
+    }
+
+    /** Mengembalikan proficiency bonus karakter. */
+    public abstract int getProficiencyBonus();
+
+    /** Mengembalikan Map skor kemampuan yang tidak dapat dimodifikasi. */
+    public Map<Ability, Integer> getAbilityScoreMap() {
+        return Collections.unmodifiableMap(new EnumMap<>(abilityScores));
     }
 
     /** Menyediakan akses ke salinan abilityScores (untuk subkelas). */
@@ -165,24 +172,13 @@ public abstract class Character implements Damageable {
     }
 
     /**
-     * Meningkatkan stat karakter (dipakai saat level-up).
-     * @param hpBonus   tambahan maxHp (dan hp saat ini ikut naik)
-     * @param atkBonus  tambahan attackPower
-     * @param defBonus  tambahan defense
-     */
-    protected void increaseStats(int hpBonus, int atkBonus, int defBonus) {
-        maxHp       += hpBonus;
-        hp          += hpBonus; // HP naik bersama level-up
-        attackPower += atkBonus;
-        defense     += defBonus;
-    }
-
-    /**
-     * Meningkatkan maxHp (dan hp saat ini) — alias untuk level-up HP.
+     * Meningkatkan maxHp (dan hp saat ini) - alias untuk level-up HP.
      * Disediakan agar subkelas Hero bisa memanggil dengan nama yang jelas.
      */
     protected void increaseMaxHp(int hpBonus) {
-        increaseStats(hpBonus, 0, 0);
+        Validator.requireNonNegative(hpBonus, "hpBonus");
+        maxHp += hpBonus;
+        hp    += hpBonus;
     }
 
     /** Skill aktif karakter. Diimplementasikan masing-masing subkelas. */

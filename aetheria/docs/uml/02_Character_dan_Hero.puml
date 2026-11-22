@@ -19,7 +19,8 @@ abstract class Character {
   + getArmorClass() : int
   + getAbilityScore(ability: Ability) : int
   + getModifier(ability: Ability) : int
-  + getProficiencyBonus() : int
+  + {abstract} getProficiencyBonus() : int
+  + getAbilityScoreMap() : Map<Ability, Integer>
   + isAlive() : boolean
   + {abstract} getAttackBonus() : int
   + {abstract} rollDamage(critical: boolean) : int
