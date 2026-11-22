@@ -48,17 +48,16 @@ public abstract class Hero extends Character {
     protected Hero(String name, HeroClass heroClass, HeroRace race) {
         // Gunakan constructor private helper agar buildAbilityScores
         // hanya dipanggil sekali
-        this(name, heroClass, race,
+        this(Validator.requireNonBlank(name, "name"),
+             Validator.requireNonNull(heroClass, "heroClass"),
+             Validator.requireNonNull(race, "race"),
              buildAbilityScores(heroClass, race));
     }
 
-    /** Constructor chaining private — menerima scores yang sudah dibangun. */
+    /** Constructor chaining private - menerima scores yang sudah dibangun. */
     private Hero(String name, HeroClass heroClass, HeroRace race,
                  EnumMap<Ability, Integer> scores) {
         super(name, scores, computeStartingHp(heroClass, scores));
-        Validator.requireNonBlank(name, "name");
-        Validator.requireNonNull(heroClass, "heroClass");
-        Validator.requireNonNull(race, "race");
         this.heroClass  = heroClass;
         this.race       = race;
         this.level      = 1;
@@ -138,13 +137,18 @@ public abstract class Hero extends Character {
         return 10 + DndRules.modifier(getAbilityScore(Ability.DEX)) + getFormDefenseBonus();
     }
 
+    @Override
+    public int getProficiencyBonus() {
+        return DndRules.proficiencyBonus(level);
+    }
+
     /**
      * Bonus serangan hero = proficiency bonus + modifier kemampuan utama
      * + bonus attack weapon dari inventory.
      */
     @Override
     public int getAttackBonus() {
-        return DndRules.proficiencyBonus(level)
+        return getProficiencyBonus()
              + DndRules.modifier(getAbilityScore(heroClass.getPrimaryAbility()))
              + inventory.getWeaponBonus()
              + getFormAttackBonus();
@@ -165,14 +169,6 @@ public abstract class Hero extends Character {
         return Dice.roll(count, sides) + mod;
     }
 
-    /**
-     * Attack power hero = total attack bonus (untuk kompatibilitas puml).
-     */
-    @Override
-    public int getAttackPower() {
-        return getAttackBonus();
-    }
-
     // ─── Leveling ────────────────────────────────────────────────────────────
 
     /**
@@ -183,8 +179,9 @@ public abstract class Hero extends Character {
      * @return level setelah XP ditambahkan
      */
     public int gainExp(int amount) {
+        Validator.requireNonNegative(amount, "amount");
         if (level >= GameConstants.MAX_LEVEL) return level;
-        exp += Validator.requireNonNegative(amount, "amount");
+        exp += amount;
 
         // Naikkan level selama XP mencukupi dan belum max
         while (level < GameConstants.MAX_LEVEL
@@ -267,11 +264,18 @@ public abstract class Hero extends Character {
     // ─── Helper damage skill (dipakai subkelas) ──────────────────────────────
 
     /**
+     * Mengembalikan modifier kemampuan tertentu (minimal 0).
+     */
+    protected int modifierOf(Ability a) {
+        return Math.max(0, DndRules.modifier(getAbilityScore(a)));
+    }
+
+    /**
      * Mengembalikan modifier kemampuan utama class ini (minimal 0).
      * Dipakai subkelas saat menghitung damage skill.
      */
     protected int primaryModifier() {
-        return Math.max(0, DndRules.modifier(getAbilityScore(heroClass.getPrimaryAbility())));
+        return modifierOf(heroClass.getPrimaryAbility());
     }
 
     /** Rentang level sebagai int: 0=lv1-4, 1=lv5-10, 2=lv11+. */

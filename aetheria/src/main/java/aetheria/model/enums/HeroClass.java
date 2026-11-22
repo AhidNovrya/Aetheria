@@ -31,7 +31,7 @@ public enum HeroClass {
     MONK("Monk", 8, Ability.DEX,
             new Ability[]{Ability.DEX, Ability.WIS, Ability.CON, Ability.STR, Ability.INT, Ability.CHA}),
 
-    PALADIN("Paladin", 10, Ability.CHA,
+    PALADIN("Paladin", 10, Ability.STR,
             new Ability[]{Ability.STR, Ability.CHA, Ability.CON, Ability.WIS, Ability.DEX, Ability.INT}),
 
     RANGER("Ranger", 10, Ability.DEX,

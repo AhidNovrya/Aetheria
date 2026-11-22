@@ -75,3 +75,7 @@ XP threshold D&D sangat tinggi (level 2 = 300 XP, level 20 = 355.000 XP kumulati
 
 **Setujui dengan menulis `SETUJU` (atau beri koreksi) agar kode class hero dapat ditulis.**
 
+---
+*Catatan Perbaikan P3: primaryAbility Paladin diubah dari CHA ke STR agar attack roll seimbang, sedangkan heal diri dan heal target Paladin tetap memakai modifier CHA.*
+
+
