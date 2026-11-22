@@ -9,7 +9,7 @@ import aetheria.util.Dice;
 
 /**
  * Ranger: pemburu jitu yang menggabungkan serangan presisi dan mantra alam.
- * Skill aktif: Precise Shot — memberikan damage + status BURN ke target.
+ * Skill aktif: Precise Shot - memberikan damage + status BURN ke target.
  */
 public class Ranger extends Hero implements SpellCaster, PhysicalSkillUser {
 
@@ -39,7 +39,7 @@ public class Ranger extends Hero implements SpellCaster, PhysicalSkillUser {
         target.addStatus(StatusType.BURN, burnDuration);
 
         return getName() + " menggunakan Precise Shot pada " + target.getName()
-             + " — damage: " + actual
+             + " - damage: " + actual
              + "; target terbakar selama " + burnDuration + " ronde";
     }
 
@@ -51,7 +51,7 @@ public class Ranger extends Hero implements SpellCaster, PhysicalSkillUser {
         int damage = Dice.roll(1, 6);
         int actual = target.takeDamage(damage);
         return getName() + " melempar panah sihir pada " + target.getName()
-             + " — damage: " + actual;
+             + " - damage: " + actual;
     }
 
     /**
@@ -62,7 +62,7 @@ public class Ranger extends Hero implements SpellCaster, PhysicalSkillUser {
         int damage = Dice.roll(1, 6);
         int actual = target.takeDamage(damage);
         return getName() + " melakukan serangan cepat pada " + target.getName()
-             + " — damage: " + actual;
+             + " - damage: " + actual;
     }
 
     @Override

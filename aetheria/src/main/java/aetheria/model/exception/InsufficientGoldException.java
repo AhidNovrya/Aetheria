@@ -1,6 +1,8 @@
 package aetheria.model.exception;
 /** Dilempar Hero.spendGold() bila gold tidak cukup. */
 public class InsufficientGoldException extends GameException {
+    private static final long serialVersionUID = 1L;
+
     private final int required;
     private final int owned;
 

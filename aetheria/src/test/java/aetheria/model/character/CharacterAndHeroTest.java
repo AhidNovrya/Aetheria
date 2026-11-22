@@ -272,7 +272,89 @@ public class CharacterAndHeroTest {
                 String log = h.useSkill(dummyTarget);
                 assertNotNull(log);
                 assertFalse(log.isBlank(), "useSkill() dari " + h.getHeroClass() + " tidak boleh blank");
+                assertFalse(log.contains("—"), "Log tidak boleh mengandung em dash: " + log);
             });
         }
+    }
+
+    @Test
+    @DisplayName("Setelah rangkaian takeDamage dan heal acak, 0 <= hp <= maxHp selalu terpenuhi")
+    void testRandomDamageAndHealBounds() {
+        Dice.setSeed(999L);
+        Paladin paladin = new Paladin("RandomTest", HeroRace.HUMAN);
+        int maxHp = paladin.getMaxHp();
+
+        for (int i = 0; i < 100; i++) {
+            int dmg = Dice.roll(1, 20);
+            paladin.takeDamage(dmg);
+            assertTrue(paladin.getHp() >= 0 && paladin.getHp() <= maxHp);
+
+            int healAmt = Dice.roll(1, 15);
+            paladin.heal(healAmt);
+            assertTrue(paladin.getHp() >= 0 && paladin.getHp() <= maxHp);
+        }
+    }
+
+    @Test
+    @DisplayName("Paladin primaryAbility adalah STR dan heal diri memakai modifier CHA")
+    void testPaladinPrimaryAndHeal() throws Exception {
+        Paladin p = new Paladin("Pally", HeroRace.HUMAN);
+        assertEquals(Ability.STR, p.getHeroClass().getPrimaryAbility());
+
+        // Human: Standard array STR 15 + 1 = 16 (mod +3). CHA 14 + 1 = 15 (mod +2).
+        // Hit die Paladin d10. CON 13 + 1 = 14 (mod +2). HP awal = 10 + 2 = 12.
+        p.takeDamage(10); // HP jadi 2/12
+        assertEquals(2, p.getHp());
+
+        // Tier 0 performSkill:
+        // 1) damage = Dice.roll(2, 8) + Dice.roll(1, 8)
+        // 2) selfHeal = Dice.roll(1, 6) + modifierOf(CHA)
+        // Hitung roll berurutan dengan seed tetap:
+        Dice.setSeed(100L);
+        Dice.roll(2, 8); // smite roll
+        Dice.roll(1, 8); // holy roll
+        int healRoll = Dice.roll(1, 6); // selfHeal roll
+
+        Dice.setSeed(100L); // reset seed agar pemanggilan di useSkill identik
+        p.useSkill(new Barbarian("Dummy", HeroRace.DWARF));
+        int expectedHeal = healRoll + 2; // mod CHA = +2
+        assertEquals(Math.min(12, 2 + expectedHeal), p.getHp());
+    }
+
+    @Test
+    @DisplayName("Hero dengan race null atau heroClass null melempar IllegalArgumentException")
+    void testNullHeroClassAndRace() {
+        assertThrows(IllegalArgumentException.class, () -> new Fighter("X", null));
+        assertThrows(IllegalArgumentException.class, () -> new Hero("X", null, HeroRace.HUMAN) {
+            @Override public String getSkillName() { return "test"; }
+            @Override protected String performSkill(Character t) { return "test"; }
+            @Override protected void applyLevelUpGrowth() {}
+        });
+    }
+
+    @Test
+    @DisplayName("gainExp(-5) melempar IllegalArgumentException bahkan di level maksimum")
+    void testGainNegativeExp() {
+        Fighter f = new Fighter("F", HeroRace.HUMAN);
+        assertThrows(IllegalArgumentException.class, () -> f.gainExp(-5));
+
+        f.gainExp(1_000_000);
+        assertEquals(GameConstants.MAX_LEVEL, f.getLevel());
+        assertThrows(IllegalArgumentException.class, () -> f.gainExp(-5));
+    }
+
+    @Test
+    @DisplayName("getModifier, getProficiencyBonus, dan getAbilityScoreMap valid dan map tidak dapat dimodifikasi")
+    void testCharacterViewAccessors() {
+        Character c = new Fighter("ViewTester", HeroRace.HUMAN);
+        assertEquals(2, c.getProficiencyBonus());
+        // Human Fighter: STR 15 + 1 = 16 -> mod +3
+        assertEquals(3, c.getModifier(Ability.STR));
+        assertEquals(16, c.getAbilityScore(Ability.STR));
+
+        var map = c.getAbilityScoreMap();
+        assertNotNull(map);
+        assertEquals(16, map.get(Ability.STR));
+        assertThrows(UnsupportedOperationException.class, () -> map.put(Ability.STR, 20));
     }
 }

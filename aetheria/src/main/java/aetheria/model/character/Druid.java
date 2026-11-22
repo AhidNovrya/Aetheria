@@ -32,14 +32,14 @@ public class Druid extends Hero implements SpellCaster, Healer, Shapeshifter {
     public String castSpell(Character target) {
         int damage = Dice.roll(1, 8) + primaryModifier();
         int actual = target.takeDamage(damage);
-        return getName() + " menyerang " + target.getName() + " dengan Thorn Whip — damage: " + actual;
+        return getName() + " menyerang " + target.getName() + " dengan Thorn Whip - damage: " + actual;
     }
 
     @Override
     public String healTarget(Character target) {
         int amount = Dice.roll(1, 8) + primaryModifier();
         int actual = healBy(target, amount);
-        return getName() + " menyembuhkan " + target.getName() + " — heal: " + actual;
+        return getName() + " menyembuhkan " + target.getName() + " - heal: " + actual;
     }
 
     @Override

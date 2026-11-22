@@ -8,7 +8,7 @@ import aetheria.util.Dice;
 
 /**
  * Warlock: penyihir perjanjian gelap yang menyerap tenaga hidup musuh.
- * Skill aktif: Eldritch Blast — memberikan damage + menyembuhkan diri 50% dari damage.
+ * Skill aktif: Eldritch Blast - memberikan damage + menyembuhkan diri 50% dari damage.
  */
 public class Warlock extends Hero implements SpellCaster, LifeStealer {
 
@@ -38,7 +38,7 @@ public class Warlock extends Hero implements SpellCaster, LifeStealer {
         int damage = Dice.roll(1, 8) + primaryModifier();
         int actual = target.takeDamage(damage);
         return getName() + " melempar mantra gelap pada " + target.getName()
-             + " — damage: " + actual;
+             + " - damage: " + actual;
     }
 
     /**
@@ -53,11 +53,11 @@ public class Warlock extends Hero implements SpellCaster, LifeStealer {
         int damage = Dice.roll(diceCounts[levelTier()], 10) + primaryModifier();
         int actual = target.takeDamage(damage);
         int selfHeal = actual / 2; // 50% dari damage aktual, rounded down
-        healBy(this, selfHeal);
+        int healed = healBy(this, selfHeal);
 
         return getName() + " menggunakan Eldritch Blast pada " + target.getName()
-             + " — damage: " + actual
-             + "; menyerap tenaga hidup: +" + selfHeal + " HP";
+             + " - damage: " + actual
+             + "; menyerap tenaga hidup: +" + healed + " HP";
     }
 
     @Override

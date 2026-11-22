@@ -9,7 +9,7 @@ import aetheria.util.Dice;
 
 /**
  * Sorcerer: penyihir khaos yang memanfaatkan energi tidak terprediksi.
- * Skill aktif: Chaos Bolt — memberikan damage khaos + status BURN ke target.
+ * Skill aktif: Chaos Bolt - memberikan damage khaos + status BURN ke target.
  */
 public class Sorcerer extends Hero implements SpellCaster, StatusInflictor {
 
@@ -36,7 +36,7 @@ public class Sorcerer extends Hero implements SpellCaster, StatusInflictor {
         target.addStatus(StatusType.BURN, 2);
 
         return getName() + " menggunakan Chaos Bolt pada " + target.getName()
-             + " — damage: " + actual
+             + " - damage: " + actual
              + "; target terbakar selama 2 ronde";
     }
 
@@ -48,7 +48,7 @@ public class Sorcerer extends Hero implements SpellCaster, StatusInflictor {
         int damage = Dice.roll(2, 6) + primaryModifier();
         int actual = target.takeDamage(damage);
         return getName() + " melempar mantra khaos pada " + target.getName()
-             + " — damage: " + actual;
+             + " - damage: " + actual;
     }
 
     /**
@@ -58,7 +58,7 @@ public class Sorcerer extends Hero implements SpellCaster, StatusInflictor {
     public String applyStatus(Character target) {
         target.addStatus(StatusType.BURN, 2);
         return getName() + " menyulut api pada " + target.getName()
-             + " — target terbakar selama 2 ronde";
+             + " - target terbakar selama 2 ronde";
     }
 
     @Override

@@ -26,7 +26,7 @@ public class Cleric extends Hero implements SpellCaster, Healer {
     public String castSpell(Character target) {
         int damage = Dice.roll(1, 8) + primaryModifier();
         int actual = target.takeDamage(damage);
-        return getName() + " menyerang " + target.getName() + " dengan Sacred Flame — damage: " + actual;
+        return getName() + " menyerang " + target.getName() + " dengan Sacred Flame - damage: " + actual;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class Cleric extends Hero implements SpellCaster, Healer {
         int amount = Dice.roll(counts[levelTier()], 8) + primaryModifier();
         int actual = healBy(target, amount);
         return getName() + " menggunakan Healing Word pada " + target.getName()
-             + " — heal: " + actual;
+             + " - heal: " + actual;
     }
 
     @Override

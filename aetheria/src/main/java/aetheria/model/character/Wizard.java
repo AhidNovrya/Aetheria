@@ -9,7 +9,7 @@ import aetheria.util.Dice;
 
 /**
  * Wizard: penyihir buku sihir yang menguasai ilmu api dahsyat.
- * Skill aktif: Fireball — memberikan damage api + status BURN 3 ronde ke target.
+ * Skill aktif: Fireball - memberikan damage api + status BURN 3 ronde ke target.
  */
 public class Wizard extends Hero implements SpellCaster, StatusInflictor {
 
@@ -36,7 +36,7 @@ public class Wizard extends Hero implements SpellCaster, StatusInflictor {
         target.addStatus(StatusType.BURN, 3);
 
         return getName() + " menggunakan Fireball pada " + target.getName()
-             + " — damage: " + actual
+             + " - damage: " + actual
              + "; target terbakar selama 3 ronde";
     }
 
@@ -48,7 +48,7 @@ public class Wizard extends Hero implements SpellCaster, StatusInflictor {
         int damage = Dice.roll(2, 6) + primaryModifier();
         int actual = target.takeDamage(damage);
         return getName() + " melempar mantra sihir pada " + target.getName()
-             + " — damage: " + actual;
+             + " - damage: " + actual;
     }
 
     /**
@@ -58,7 +58,7 @@ public class Wizard extends Hero implements SpellCaster, StatusInflictor {
     public String applyStatus(Character target) {
         target.addStatus(StatusType.BURN, 3);
         return getName() + " menyalakan api pada " + target.getName()
-             + " — target terbakar selama 3 ronde";
+             + " - target terbakar selama 3 ronde";
     }
 
     @Override

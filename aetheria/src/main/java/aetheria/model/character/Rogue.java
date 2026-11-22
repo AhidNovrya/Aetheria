@@ -9,7 +9,7 @@ import aetheria.util.Dice;
 
 /**
  * Rogue: pencuri bayangan yang menyerang dari kegelapan dengan racun mematikan.
- * Skill aktif: Sneak Attack — memberikan damage + status POISON ke target.
+ * Skill aktif: Sneak Attack - memberikan damage + status POISON ke target.
  */
 public class Rogue extends Hero implements PhysicalSkillUser, StatusInflictor {
 
@@ -36,7 +36,7 @@ public class Rogue extends Hero implements PhysicalSkillUser, StatusInflictor {
         target.addStatus(StatusType.POISON, 3);
 
         return getName() + " menggunakan Sneak Attack pada " + target.getName()
-             + " — damage: " + actual
+             + " - damage: " + actual
              + "; target diracuni selama 3 ronde";
     }
 
@@ -48,7 +48,7 @@ public class Rogue extends Hero implements PhysicalSkillUser, StatusInflictor {
         int damage = Dice.roll(1, 6);
         int actual = target.takeDamage(damage);
         return getName() + " melakukan tikaman cepat pada " + target.getName()
-             + " — damage: " + actual;
+             + " - damage: " + actual;
     }
 
     /**
@@ -58,7 +58,7 @@ public class Rogue extends Hero implements PhysicalSkillUser, StatusInflictor {
     public String applyStatus(Character target) {
         target.addStatus(StatusType.POISON, 3);
         return getName() + " mengoleskan racun pada " + target.getName()
-             + " — target diracuni selama 3 ronde";
+             + " - target diracuni selama 3 ronde";
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Barbarian extends Hero implements PhysicalSkillUser {
         int damage = Dice.roll(counts[levelTier()], 6) + primaryModifier();
         int actual = target.takeDamage(damage);
         return getName() + " menggunakan Raging Strike pada " + target.getName()
-             + " — damage: " + actual;
+             + " - damage: " + actual;
     }
 
     @Override

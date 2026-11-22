@@ -27,7 +27,7 @@ public class Fighter extends Hero implements PhysicalSkillUser {
         int damage = Dice.roll(counts[levelTier()], 8) + primaryModifier();
         int actual = target.takeDamage(damage);
         return getName() + " menggunakan Power Strike pada " + target.getName()
-             + " — damage: " + actual;
+             + " - damage: " + actual;
     }
 
     @Override
